@@ -1,5 +1,6 @@
 package node;
 
+import cfg.CFGNode;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import structureTree.SNode;
 import structureTree.SProjectNode;
@@ -9,16 +10,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ASTFolderNode extends ASTNode {
+public class FolderNode extends Node {
+
+    private CFGNode cfg;
+
+    public CFGNode getCfg() {
+        return cfg;
+    }
+
+    public void setCfg(CFGNode cfg) {
+        this.cfg = cfg;
+    }
 
     @JsonIgnore
-    public List<ASTClassAbstractableElementVisibleElementJavaNode> getClassNodes() {
-        List<ASTClassAbstractableElementVisibleElementJavaNode> result = new ArrayList<>();
-        for (ASTNode child : this.getChildren()) {
-            if (child instanceof ASTClassAbstractableElementVisibleElementJavaNode)
-                result.add((ASTClassAbstractableElementVisibleElementJavaNode) child);
-            else if (child instanceof ASTFolderNode) {
-                result.addAll(((ASTFolderNode) child).getClassNodes());
+    public List<ClassAbstractableElementVisibleElementJavaNode> getClassNodes() {
+        List<ClassAbstractableElementVisibleElementJavaNode> result = new ArrayList<>();
+        for (Node child : this.getChildren()) {
+            if (child instanceof ClassAbstractableElementVisibleElementJavaNode)
+                result.add((ClassAbstractableElementVisibleElementJavaNode) child);
+            else if (child instanceof FolderNode) {
+                result.addAll(((FolderNode) child).getClassNodes());
             }
         }
         return result;
@@ -27,9 +38,9 @@ public class ASTFolderNode extends ASTNode {
     @JsonIgnore
     public ArrayList<ASTRelationshipNode> getClassRelationships() {
         ArrayList<ASTRelationshipNode> ASTRelationshipNodeList = new ArrayList<ASTRelationshipNode>();
-        List<ASTClassAbstractableElementVisibleElementJavaNode> classes = this.getClassNodes();
+        List<ClassAbstractableElementVisibleElementJavaNode> classes = this.getClassNodes();
 
-        for (ASTClassAbstractableElementVisibleElementJavaNode cd : classes) {
+        for (ClassAbstractableElementVisibleElementJavaNode cd : classes) {
             if (cd.getParentClass() != null) {
                 int keySuperClass = this.findIdByQualifiedName(cd.getParentClass(), classes);
                 if (keySuperClass != -1) {
@@ -58,9 +69,9 @@ public class ASTFolderNode extends ASTNode {
         return ASTRelationshipNodeList;
     }
 
-    public int findIdByQualifiedName(String name, List<ASTClassAbstractableElementVisibleElementJavaNode> classes) {
+    public int findIdByQualifiedName(String name, List<ClassAbstractableElementVisibleElementJavaNode> classes) {
         if (classes.size() > 0) {
-            for (ASTClassAbstractableElementVisibleElementJavaNode cd : classes) {
+            for (ClassAbstractableElementVisibleElementJavaNode cd : classes) {
                 if (name.equals(cd.getQualifiedName())) return cd.getId();
             }
             return -1;

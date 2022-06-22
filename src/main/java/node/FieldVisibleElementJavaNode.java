@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ASTFieldVisibleElementJavaNode extends ASTVisibleElementJavaNode {
+public class FieldVisibleElementJavaNode extends VisibleElementJavaNode {
 
     protected String type = "abc";
     protected String value;
@@ -45,10 +45,10 @@ public class ASTFieldVisibleElementJavaNode extends ASTVisibleElementJavaNode {
                 '}';
     }
 
-    public static List<ASTFieldVisibleElementJavaNode> setInforFromASTNode(FieldDeclaration node) {
-        List<ASTFieldVisibleElementJavaNode> fieldNodes = new ArrayList<>();
+    public static List<FieldVisibleElementJavaNode> setInforFromASTNode(FieldDeclaration node) {
+        List<FieldVisibleElementJavaNode> fieldNodes = new ArrayList<>();
         for (int i = 0; i < node.fragments().size(); i++) {
-            ASTFieldVisibleElementJavaNode fieldNode = new ASTFieldVisibleElementJavaNode();
+            FieldVisibleElementJavaNode fieldNode = new FieldVisibleElementJavaNode();
             fieldNode.setType(ASTHelper.getFullyQualifiedName(node.getType(), (CompilationUnit)node.getRoot()));
             fieldNode.setStartPosition(node.getStartPosition());
             //set ten cua thuoc tinh

@@ -15,7 +15,7 @@ import java.util.List;
 
 
 
-public class ASTClassAbstractableElementVisibleElementJavaNode extends ASTAbstractableElementVisibleElementJavaNode {
+public class ClassAbstractableElementVisibleElementJavaNode extends AbstractableElementVisibleElementJavaNode {
 
     protected boolean isInterface;
     protected String parentClass;
@@ -76,7 +76,7 @@ public class ASTClassAbstractableElementVisibleElementJavaNode extends ASTAbstra
         this.line = line;
     }
 
-    public ASTClassAbstractableElementVisibleElementJavaNode() {
+    public ClassAbstractableElementVisibleElementJavaNode() {
         super();
         interfaceList = new ArrayList<>();
     }
@@ -91,21 +91,21 @@ public class ASTClassAbstractableElementVisibleElementJavaNode extends ASTAbstra
     }
 
     @JsonIgnore
-    public List<ASTMethodAbstractableElementVisibleElementJavaNode> getMethodList() {
-        List<ASTMethodAbstractableElementVisibleElementJavaNode> result = new ArrayList<>();
-        for (ASTNode child : this.getChildren()) {
-            if (child instanceof ASTMethodAbstractableElementVisibleElementJavaNode)
-                result.add((ASTMethodAbstractableElementVisibleElementJavaNode) child);
+    public List<MethodAbstractableElementVisibleElementJavaNode> getMethodList() {
+        List<MethodAbstractableElementVisibleElementJavaNode> result = new ArrayList<>();
+        for (Node child : this.getChildren()) {
+            if (child instanceof MethodAbstractableElementVisibleElementJavaNode)
+                result.add((MethodAbstractableElementVisibleElementJavaNode) child);
         }
         return result;
     }
 
     @JsonIgnore
-    public List<ASTFieldVisibleElementJavaNode> getFieldList() {
-        List<ASTFieldVisibleElementJavaNode> result = new ArrayList<>();
-        for (ASTNode child : this.getChildren()) {
-            if (child instanceof ASTFieldVisibleElementJavaNode)
-                result.add((ASTFieldVisibleElementJavaNode) child);
+    public List<FieldVisibleElementJavaNode> getFieldList() {
+        List<FieldVisibleElementJavaNode> result = new ArrayList<>();
+        for (Node child : this.getChildren()) {
+            if (child instanceof FieldVisibleElementJavaNode)
+                result.add((FieldVisibleElementJavaNode) child);
         }
         return result;
     }
@@ -178,17 +178,18 @@ public class ASTClassAbstractableElementVisibleElementJavaNode extends ASTAbstra
         }
 
         FieldDeclaration[] fieldList = node.getFields();
-        List<ASTNode> fieldASTNodes = Convert.convertASTListNodeToFieldNode(fieldList);
-        this.addChildren(fieldASTNodes, cu);
+        List<Node> fieldNodes = Convert.convertASTListNodeToFieldNode(fieldList);
+        this.addChildren(fieldNodes, cu);
         MethodDeclaration[] methodList = node.getMethods();
-        List<ASTNode> methodASTNodes = Convert.convertASTListNodeToMethodNode(methodList, cu);
+        List<Node> methodNodes = Convert.convertASTListNodeToMethodNode(methodList, cu);
 
-        this.addChildren(methodASTNodes, cu);
+        this.addChildren(methodNodes, cu);
 
         //TODO lay cac class con ben trong
+
         TypeDeclaration[] classList = node.getTypes();
-        List<ASTNode> innerClassASTNode = Convert.convertASTListNodeToClassNode(classList, cu);
-        this.addChildren(innerClassASTNode, cu);
+        List<Node> innerClassNode = Convert.convertASTListNodeToClassNode(classList, cu);
+        this.addChildren(innerClassNode, cu);
 
         //lay superClass
         Type superClassType = node.getSuperclassType();

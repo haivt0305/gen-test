@@ -1,11 +1,22 @@
 package parser;
 
+import cfg.*;
+import com.sun.istack.internal.NotNull;
 import org.eclipse.jdt.core.dom.*;
+import utils.Utils;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class ASTHelper {
+
+    protected static List<String> primitiveTypes = Arrays.asList("boolean", "short", "int", "long", "float", "double", "void");
+    protected static List<String> javaLangTypes = Arrays.asList("Boolean", "Byte", "Character.Subset", "Character.UnicodeBlock", "ClassLoader", "Double",
+            "Float", "Integer", "Long", "Math", "Number", "Object", "Package", "Process", "Runtime",
+            "Short", "String", "StringBuffer", "StringBuilder", "System", "Thread", "ThreadGroup",
+            "Throwable", "Void");
+
+
     public static String getFullyQualifiedName(Type type, CompilationUnit cu) {
         if (type.isParameterizedType()) {
             ParameterizedType parameterizedType = (ParameterizedType) type;
@@ -45,7 +56,6 @@ public class ASTHelper {
         }
         return result;
     }
-
     protected static String getFullyQualifiedTypeName(String typeName, CompilationUnit cu) {
         // input is null or input is already a fully qualified type
         if (typeName == null || typeName.contains(".")) return typeName;
@@ -78,17 +88,37 @@ public class ASTHelper {
         }
     }
 
-    protected static final String[] PRIMITIVE_TYPES = {
-            "boolean", "short", "int", "long", "float", "double", "void"
-    };
+    public static void generateCFGTreeFromASTNode(ASTNode astNode, @NotNull CFGNode rootCFG) {
 
-    protected static final String[] JAVA_LANG_TYPES = {
-            "Boolean", "Byte", "Character.Subset", "Character.UnicodeBlock", "ClassLoader", "Double",
-            "Float", "Integer", "Long", "Math", "Number", "Object", "Package", "Process", "Runtime",
-            "Short", "String", "StringBuffer", "StringBuilder", "System", "Thread", "ThreadGroup",
-            "Throwable", "Void"
-    };
+        List<ASTNode> children = Utils.getChildren(astNode);
+        for (ASTNode node : children) {
+            CFGNode cfgChild = null;
+            if (node instanceof IfStatement) {
+                cfgChild = new CFGIfStatementNode();
+            }
+            else if (node instanceof TypeDeclaration || node instanceof MethodDeclaration) {
+                cfgChild = new CFGStartNode();
+            }
+            else if (node instanceof FieldDeclaration) {
+                cfgChild = new CFGNode();
+            }
+            else if (node instanceof Block) {
+                cfgChild = new CFGBlock();
+            }
+            else if (node instanceof ExpressionStatement) {
+                cfgChild = new CFGExpressionStatement();
+            }
+            else if (node instanceof Expression) {
+                cfgChild = new CFGExpression();
+            }
+            if (cfgChild != null) {
+                cfgChild.setContent(node.toString());
+                cfgChild.setParent(rootCFG);
+                rootCFG.getChildren().add(cfgChild);
+                generateCFGTreeFromASTNode(node, cfgChild);
+            }
+        }
 
-    protected static List<String> primitiveTypes = Arrays.asList(PRIMITIVE_TYPES);
-    protected static List<String> javaLangTypes = Arrays.asList(JAVA_LANG_TYPES);
+    }
+
 }

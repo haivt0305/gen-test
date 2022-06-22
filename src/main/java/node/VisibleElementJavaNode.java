@@ -2,7 +2,7 @@ package node;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class ASTVisibleElementJavaNode extends ASTJavaNode {
+public class VisibleElementJavaNode extends JavaNode {
 
     public static final String PUBLIC_MODIFIER = "public";
     public static final String DEFAULT_MODIFIER = "default";

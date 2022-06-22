@@ -15,7 +15,7 @@ import java.util.List;
         include = JsonTypeInfo.As.PROPERTY,
         property = "json_type")
 
-public class ASTNode implements Serializable {
+public class Node implements Serializable {
 
     private static final long serialVersionUID = -1411216676620846129L;
 
@@ -29,9 +29,9 @@ public class ASTNode implements Serializable {
     protected int parentNodeId;
     protected int startPosition;
     @JsonIgnore
-    protected ASTNode parent;
+    protected Node parent;
 
-    protected List<ASTNode> children;
+    protected List<Node> children;
 
 
     public static int getCountId() {
@@ -39,7 +39,7 @@ public class ASTNode implements Serializable {
     }
 
     public static void setCountId(int countId) {
-        ASTNode.countId = countId;
+        Node.countId = countId;
     }
 
     public int getId() {
@@ -86,43 +86,43 @@ public class ASTNode implements Serializable {
         this.startPosition = startPosition;
     }
 
-    public ASTNode getParent() {
+    public Node getParent() {
         return parent;
     }
 
-    public void setParent(ASTNode parent) {
+    public void setParent(Node parent) {
         this.parent = parent;
     }
 
-    public List<ASTNode> getChildren() {
+    public List<Node> getChildren() {
         return children;
     }
 
-    public void setChildren(List<ASTNode> children) {
+    public void setChildren(List<Node> children) {
         this.children = children;
     }
 
-    public ASTNode() {
+    public Node() {
         children = new ArrayList<>();
         countId++;
         this.id = countId;
     }
 
-    public void addChildren(List<ASTNode> children, CompilationUnit cu) {
-        for (ASTNode ASTNode : children) {
-            int lineNumber = cu.getLineNumber(ASTNode.getStartPosition());
-            ASTNode.setLine(lineNumber);
-            ASTNode.setParentNodeId(this.getId());
-            ASTNode.setParent(this);
-            this.children.add(ASTNode);
+    public void addChildren(List<Node> children, CompilationUnit cu) {
+        for (Node Node : children) {
+            int lineNumber = cu.getLineNumber(Node.getStartPosition());
+            Node.setLine(lineNumber);
+            Node.setParentNodeId(this.getId());
+            Node.setParent(this);
+            this.children.add(Node);
         }
     }
 
-    public void addChildrenFolder(List<? extends ASTNode> children) {
-        for (ASTNode ASTNode : children) {
-            ASTNode.setParentNodeId(this.getId());
-            ASTNode.setParent(this);
-            this.children.add(ASTNode);
+    public void addChildrenFolder(List<? extends Node> children) {
+        for (Node Node : children) {
+            Node.setParentNodeId(this.getId());
+            Node.setParent(this);
+            this.children.add(Node);
         }
     }
 
@@ -146,7 +146,7 @@ public class ASTNode implements Serializable {
      */
     @JsonIgnore
     public String getRelativePath() {
-        ASTNode root = getRootNode(this);
+        Node root = getRootNode(this);
         if (root != null) {
             return getAbsolutePath().replace(root.getAbsolutePath() + File.separator, "");
         } else return getAbsolutePath();
@@ -158,7 +158,7 @@ public class ASTNode implements Serializable {
      * @param n
      * @return
      */
-    public ASTNode getRootNode(ASTNode n) {
+    public Node getRootNode(Node n) {
         if (n.getParent() != null) {
             return getRootNode(n.getParent());
         }
@@ -172,13 +172,13 @@ public class ASTNode implements Serializable {
      ***************************************/
 
     @JsonIgnore
-    public List<ASTNode> getAllChildren() {
+    public List<Node> getAllChildren() {
         return doGetAllChildren(this);
     }
 
-    private List<ASTNode> doGetAllChildren(ASTNode rootASTNode) {
-        List<ASTNode> allChildren = new ArrayList<>();
-        for (ASTNode child : rootASTNode.getChildren()) {
+    private List<Node> doGetAllChildren(Node rootNode) {
+        List<Node> allChildren = new ArrayList<>();
+        for (Node child : rootNode.getChildren()) {
             allChildren.add(child);
             allChildren.addAll(doGetAllChildren(child));
         }

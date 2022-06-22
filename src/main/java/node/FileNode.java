@@ -3,7 +3,7 @@ package node;
 import structureTree.SNode;
 import structureTree.SProjectNode;
 
-public class ASTFileNode extends ASTNode {
+public class FileNode extends Node {
 
     @Override
     public SNode parseToSNode() {

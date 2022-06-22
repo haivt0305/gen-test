@@ -1,16 +1,16 @@
 package structureTree.structureNode;
 
-import node.ASTMethodAbstractableElementVisibleElementJavaNode;
+import node.MethodAbstractableElementVisibleElementJavaNode;
 
 public class SFunctionNode extends SAbstractableNode {
 
-    private ASTMethodAbstractableElementVisibleElementJavaNode ast;
+    private MethodAbstractableElementVisibleElementJavaNode ast;
 
-    public ASTMethodAbstractableElementVisibleElementJavaNode getAst() {
+    public MethodAbstractableElementVisibleElementJavaNode getAst() {
         return ast;
     }
 
-    public void setAst(ASTMethodAbstractableElementVisibleElementJavaNode ast) {
+    public void setAst(MethodAbstractableElementVisibleElementJavaNode ast) {
         this.ast = ast;
     }
 }

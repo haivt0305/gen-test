@@ -10,15 +10,15 @@ import structureTree.normalNode.SNormalIntegerNode;
 
 @Getter
 @Setter
-public class ASTParameterJavaNode extends ASTJavaNode {
+public class ParameterJavaNode extends JavaNode {
     protected String type;
     protected boolean isFinal;
 
-    public ASTParameterJavaNode() {
+    public ParameterJavaNode() {
 
     }
 
-    public ASTParameterJavaNode(String name, String type) {
+    public ParameterJavaNode(String name, String type) {
         super();
         this.name = name;
         this.type = type;

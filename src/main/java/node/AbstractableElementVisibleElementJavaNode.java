@@ -2,7 +2,7 @@ package node;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class ASTAbstractableElementVisibleElementJavaNode extends ASTVisibleElementJavaNode {
+public class AbstractableElementVisibleElementJavaNode extends VisibleElementJavaNode {
 
     protected boolean isAbstract = false;
 

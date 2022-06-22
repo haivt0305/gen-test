@@ -1,6 +1,6 @@
 package structureTree;
 
-import node.ASTFolderNode;
+import node.FolderNode;
 import parser.ProjectParser;
 import utils.Utils;
 
@@ -50,7 +50,7 @@ public abstract class SNode {
 
     public static SNode parse(String projectPath) {
         ProjectParser parser = ProjectParser.getParser();
-        ASTFolderNode folderNode = null;
+        FolderNode folderNode = null;
         try {
             parser.doParsing(projectPath, 0, null);
             folderNode = parser.getFolderNode();

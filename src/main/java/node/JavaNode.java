@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
-public class ASTJavaNode extends ASTNode {
+public class JavaNode extends Node {
 
     @JsonProperty("isFinal")
     protected boolean isFinal = false;

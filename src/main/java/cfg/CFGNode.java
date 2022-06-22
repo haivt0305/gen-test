@@ -4,9 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CFGNode {
+    private String content = "";
     private CFGNode parent;
     private List<CFGNode> children = new ArrayList<>();
     private boolean isVisited = false;
+
+    public CFGNode(){}
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
 
     public CFGNode getParent() {
         return parent;
@@ -31,4 +42,5 @@ public class CFGNode {
     public void setVisited(boolean visited) {
         isVisited = visited;
     }
+
 }

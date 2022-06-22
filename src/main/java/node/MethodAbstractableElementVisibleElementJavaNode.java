@@ -14,23 +14,23 @@ import java.util.List;
 
 @Getter
 @Setter
-public class ASTMethodAbstractableElementVisibleElementJavaNode extends ASTAbstractableElementVisibleElementJavaNode {
+public class MethodAbstractableElementVisibleElementJavaNode extends AbstractableElementVisibleElementJavaNode {
 
     protected String returnType;
     private String simpleName;
     private boolean isConstructor = false;
     private int line;
-    protected List<ASTParameterJavaNode> parameters;
+    protected List<ParameterJavaNode> parameters;
 
-    public ASTMethodAbstractableElementVisibleElementJavaNode() {
+    public MethodAbstractableElementVisibleElementJavaNode() {
         parameters = this.getParameters();
     }
 
-    public List<ASTParameterJavaNode> getParameters() {
-        ArrayList<ASTParameterJavaNode> list = new ArrayList<>();
-        for (ASTNode ASTNode : this.getChildren()) {
-            if (ASTNode instanceof ASTParameterJavaNode) {
-                list.add((ASTParameterJavaNode) ASTNode);
+    public List<ParameterJavaNode> getParameters() {
+        ArrayList<ParameterJavaNode> list = new ArrayList<>();
+        for (Node Node : this.getChildren()) {
+            if (Node instanceof ParameterJavaNode) {
+                list.add((ParameterJavaNode) Node);
             }
         }
         return list;
@@ -40,11 +40,11 @@ public class ASTMethodAbstractableElementVisibleElementJavaNode extends ASTAbstr
         this.parameters = list;
     }
 
-    public void addParameter(ASTParameterJavaNode param) {
+    public void addParameter(ParameterJavaNode param) {
         if (param != null) parameters.add(param);
     }
 
-    public void addAllParameters(List<ASTParameterJavaNode> params) {
+    public void addAllParameters(List<ParameterJavaNode> params) {
         parameters.addAll(params);
     }
 
@@ -124,9 +124,9 @@ public class ASTMethodAbstractableElementVisibleElementJavaNode extends ASTAbstr
 
         //TODO Tim parameters of methods
         List parameters = node.parameters();
-        List<ASTNode> paraASTNodes = new ArrayList<>();
+        List<Node> paraNodes = new ArrayList<>();
         for (Object o : parameters) {
-            ASTParameterJavaNode paraNode = new ASTParameterJavaNode();
+            ParameterJavaNode paraNode = new ParameterJavaNode();
 //            paraNode.setId(ASTNode.countId);
             if (o instanceof SingleVariableDeclaration) {
                 SingleVariableDeclaration temp = (SingleVariableDeclaration) o;
@@ -151,7 +151,7 @@ public class ASTMethodAbstractableElementVisibleElementJavaNode extends ASTAbstr
                             }
 
                         }
-                        paraASTNodes.add(paraNode);
+                        paraNodes.add(paraNode);
 
                     } else if (temp.getType() instanceof PrimitiveType) {
                         PrimitiveType primitiveType = (PrimitiveType) temp.getType();
@@ -169,7 +169,7 @@ public class ASTMethodAbstractableElementVisibleElementJavaNode extends ASTAbstr
                                 paraNode.setFinal(true);
                             }
                         }
-                        paraASTNodes.add(paraNode);
+                        paraNodes.add(paraNode);
                     } else if (temp.getType() instanceof ParameterizedType) {
                         ParameterizedType parameterizedType = (ParameterizedType) temp.getType();
                         paraNode.setType(ASTHelper.getFullyQualifiedName(parameterizedType, cu));
@@ -184,7 +184,7 @@ public class ASTMethodAbstractableElementVisibleElementJavaNode extends ASTAbstr
                                 paraNode.setFinal(true);
                             }
                         }
-                        paraASTNodes.add(paraNode);
+                        paraNodes.add(paraNode);
                     } else if (temp.getType() instanceof ArrayType) {
                         ArrayType arrayType = (ArrayType) temp.getType();
                         paraNode.setType(ASTHelper.getFullyQualifiedName(arrayType, cu));
@@ -199,14 +199,14 @@ public class ASTMethodAbstractableElementVisibleElementJavaNode extends ASTAbstr
                                 paraNode.setFinal(true);
                             }
                         }
-                        paraASTNodes.add(paraNode);
+                        paraNodes.add(paraNode);
                     }
                 }
             }
 
 
         }
-        this.addChildren(paraASTNodes, cu);
+        this.addChildren(paraNodes, cu);
 
     }
 

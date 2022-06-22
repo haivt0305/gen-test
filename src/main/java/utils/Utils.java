@@ -1,18 +1,18 @@
 package utils;
 
-import node.ASTNode;
-import org.eclipse.jdt.core.dom.AST;
-import org.eclipse.jdt.core.dom.StructuralPropertyDescriptor;
+import node.Node;
+import org.eclipse.jdt.core.dom.*;
 import structureTree.SNode;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Utils {
-    public static SNode parseFolderNodeToSNode(ASTNode ASTNode) {
+    public static SNode parseFolderNodeToSNode(Node Node) {
 //        System.out.println("parse " + ASTNode.getName());
-        SNode root = ASTNode.parseToSNode();
-        for (ASTNode child : ASTNode.getChildren()) {
+        SNode root = Node.parseToSNode();
+        for (Node child : Node.getChildren()) {
             System.out.println("parse " + child.getName());
             SNode sNodeChild = Utils.parseFolderNodeToSNode(child);
 //            SNode sChild = child.parseToSNode();
@@ -26,24 +26,46 @@ public class Utils {
         return root;
     }
 
-    public static void getChildren(org.eclipse.jdt.core.dom.ASTNode node) {
-        if (node != null) {
-            List<org.eclipse.jdt.core.dom.ASTNode> children = new ArrayList<>();
-            List list = node.structuralPropertiesForType();
-            for (int i = 0; i < list.size(); i++) {
-                Object child = node.getStructuralProperty((StructuralPropertyDescriptor) list.get(i));
-                if (child instanceof org.eclipse.jdt.core.dom.ASTNode) {
-                    children.add((org.eclipse.jdt.core.dom.ASTNode) child);
-                }
-                if (children.get(0) != null) {
-                    String c = children.toString();
-//                    results.append("Children Node: " + c + "\n");
-                    System.out.println("Children Node: " + c + "\n");
-                    getChildren(children.get(0));
-                }
-            }
-        }    else {
-            return;
+    public static List<ASTNode> getChildren(org.eclipse.jdt.core.dom.ASTNode node) {
+        List<ASTNode> children = new ArrayList<>();
+        if (node instanceof MethodDeclaration) {
+            Block block = ((MethodDeclaration) node).getBody();
+            children.add(block);
+//            List<Statement> statements = block.statements();
+//            for (Statement statement : statements) {
+//                if (statement instanceof IfStatement) {
+//
+//                }
+//            }
         }
+        else if (node instanceof TypeDeclaration) {
+            List<FieldDeclaration> atributes = Arrays.asList(((TypeDeclaration) node).getFields());
+            for (FieldDeclaration attribute : atributes) {
+                children.add(attribute);
+            }
+
+            List<MethodDeclaration> methods = Arrays.asList(((TypeDeclaration) node).getMethods());
+            for (MethodDeclaration method : methods) {
+                children.add(method);
+            }
+
+        }
+        else if (node instanceof Block) {
+            List<Statement> statements = ((Block) node).statements();
+            for (ASTNode statement : statements) {
+                children.add(statement);
+            }
+        }
+        else if (node instanceof IfStatement) {
+            children.add(((IfStatement) node).getExpression());
+            children.add(((IfStatement) node).getThenStatement());
+            children.add(((IfStatement) node).getElseStatement());
+        }
+        else if (node instanceof ExpressionStatement) {
+            children.add(((ExpressionStatement) node).getExpression());
+        }
+
+        return children;
     }
+
 }
