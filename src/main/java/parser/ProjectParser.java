@@ -4,6 +4,8 @@ import cfg.CFGNode;
 import node.ClassAbstractableElementVisibleElementJavaNode;
 import node.Node;
 import node.FolderNode;
+import structureTree.SNode;
+import utils.Utils;
 
 
 import java.io.File;
@@ -40,11 +42,6 @@ public class ProjectParser {
         this.folderNode = folderNode;
     }
 
-    public static FolderNode parse(String rootPath) throws IOException {
-        ProjectParser projectParser = new ProjectParser();
-        projectParser.doParsing(rootPath, 0, null);
-        return projectParser.folderNode;
-    }
 
     public void doParsing(String path, int level, Node parent) throws IOException {
         FolderNode folderNode = new FolderNode();
@@ -71,7 +68,7 @@ public class ProjectParser {
                 if (f.isFile() && f.getName().endsWith(".java")) {
                     String fileToString = FileService.readFileToString(f.getPath());
                     List<ClassAbstractableElementVisibleElementJavaNode> classes = JavaFileParser.parse(fileToString);
-                    CFGNode cfgNode = JavaFileParser.parserToCFG(fileToString);
+                    CFGNode cfgNode = CFGNode.parserToCFG(fileToString);
                     folderNode.addChildrenFolder(classes);
                     folderNode.setCfg(cfgNode);
                 }
@@ -89,5 +86,17 @@ public class ProjectParser {
         this.setFolderNode(folderNode);
     }
 
-
+    public static SNode parse(String projectPath) {
+        ProjectParser parser = ProjectParser.getParser();
+        FolderNode folderNode = null;
+        try {
+            parser.doParsing(projectPath, 0, null);
+            folderNode = parser.getFolderNode();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        SNode root = Utils.parseFolderNodeToSNode(folderNode);
+//        root.refreshParent();
+        return root;
+    }
 }

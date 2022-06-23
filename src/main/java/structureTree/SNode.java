@@ -48,20 +48,6 @@ public abstract class SNode {
     }
 
 
-    public static SNode parse(String projectPath) {
-        ProjectParser parser = ProjectParser.getParser();
-        FolderNode folderNode = null;
-        try {
-            parser.doParsing(projectPath, 0, null);
-            folderNode = parser.getFolderNode();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        SNode root = Utils.parseFolderNodeToSNode(folderNode);
-//        root.refreshParent();
-        return root;
-    }
-
     private void refreshParent() {
         for (SNode node : getChildren()) {
             node.setParent(this);

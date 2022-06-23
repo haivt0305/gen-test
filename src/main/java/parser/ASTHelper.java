@@ -113,6 +113,10 @@ public class ASTHelper {
             }
             if (cfgChild != null) {
                 cfgChild.setContent(node.toString());
+                cfgChild.setStart(node.getStartPosition());
+                cfgChild.setEnd(node.getStartPosition() + node.getLength());
+                cfgChild.setAst(node);
+
                 cfgChild.setParent(rootCFG);
                 rootCFG.getChildren().add(cfgChild);
                 generateCFGTreeFromASTNode(node, cfgChild);

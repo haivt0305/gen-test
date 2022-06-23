@@ -9,15 +9,14 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Utils {
-    public static SNode parseFolderNodeToSNode(Node Node) {
+    public static SNode parseFolderNodeToSNode(Node node) {
 //        System.out.println("parse " + ASTNode.getName());
-        SNode root = Node.parseToSNode();
-        for (Node child : Node.getChildren()) {
+        SNode root = node.parseToSNode();
+        if (root == null) return null;
+        for (Node child : node.getChildren()) {
             System.out.println("parse " + child.getName());
             SNode sNodeChild = Utils.parseFolderNodeToSNode(child);
-//            SNode sChild = child.parseToSNode();
-            root.getChildren().add(sNodeChild);
-//            sNodeChild.setParent(root);
+            if (sNodeChild != null) root.getChildren().add(sNodeChild);
         }
         for (SNode child : root.getChildren()) {
             child.setParent(root);

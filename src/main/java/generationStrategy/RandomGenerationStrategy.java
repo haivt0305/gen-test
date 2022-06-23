@@ -35,7 +35,10 @@ public class RandomGenerationStrategy extends GenerationStrategy {
         generateGlobalDataNode(functionNode, globalDataNode);
         generateDataForDataNode(functionNode, unitUnderTestDataNode);
 
-        testCase.setRootDataNode(new RootDataNode());
+        testCase.setRootDataNode(rootDataNode);
+        testCase.setNameOfTestcase(functionNode.getName());
+        testCaseList.add(testCase);
+        setListTestCaseGenerated(testCaseList);
         return testCaseList;
     }
 
