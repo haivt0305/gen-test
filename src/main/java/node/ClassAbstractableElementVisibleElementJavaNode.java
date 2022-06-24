@@ -126,6 +126,7 @@ public class ClassAbstractableElementVisibleElementJavaNode extends Abstractable
     }
 
     public void setInforFromASTNode(TypeDeclaration node, CompilationUnit cu) {
+        setAstNode(node);
         if (node.isInterface() == true) this.setInterface(true);
         this.setStartPosition(node.getStartPosition());
         //lay ten

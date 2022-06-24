@@ -11,7 +11,6 @@ public class TestcaseManager {
     Map<String, TestCase> testCaseMap = new HashMap<>();
 
     public static List<TestCase> createTestcase(SFunctionNode functionNode, GenerationStrategy strategy) {
-        strategy.generate(functionNode);
-        return strategy.getListTestCaseGenerated();
+        return strategy.generate(functionNode);
     }
 }

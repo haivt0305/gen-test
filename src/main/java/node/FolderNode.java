@@ -12,15 +12,7 @@ import java.util.List;
 
 public class FolderNode extends Node {
 
-    private CFGNode cfg;
 
-    public CFGNode getCfg() {
-        return cfg;
-    }
-
-    public void setCfg(CFGNode cfg) {
-        this.cfg = cfg;
-    }
 
     @JsonIgnore
     public List<ClassAbstractableElementVisibleElementJavaNode> getClassNodes() {

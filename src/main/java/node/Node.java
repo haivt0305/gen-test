@@ -1,5 +1,6 @@
 package node;
 
+import cfg.CFGNode;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.eclipse.jdt.core.dom.CompilationUnit;
@@ -28,10 +29,19 @@ public class Node implements Serializable {
 
     protected int parentNodeId;
     protected int startPosition;
+    private CFGNode cfg;
+
     @JsonIgnore
     protected Node parent;
-
     protected List<Node> children;
+
+    public CFGNode getCfg() {
+        return cfg;
+    }
+
+    public void setCfg(CFGNode cfg) {
+        this.cfg = cfg;
+    }
 
 
     public static int getCountId() {
@@ -68,6 +78,7 @@ public class Node implements Serializable {
 
     public void setAbsolutePath(String absolutePath) {
         this.absolutePath = absolutePath;
+        setChildrenAbsolutePath();
     }
 
     public int getParentNodeId() {
@@ -92,6 +103,7 @@ public class Node implements Serializable {
 
     public void setParent(Node parent) {
         this.parent = parent;
+        this.parentNodeId = parent.getId();
     }
 
     public List<Node> getChildren() {
@@ -207,5 +219,12 @@ public class Node implements Serializable {
 
     public SNode parseToSNode() {
         return null;
+    }
+
+    public void setChildrenAbsolutePath() {
+        for (Node child : children) {
+            child.setAbsolutePath(absolutePath + "/" + child.getName());
+            child.setChildrenAbsolutePath();
+        }
     }
 }

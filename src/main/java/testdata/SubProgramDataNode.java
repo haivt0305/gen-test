@@ -2,7 +2,7 @@ package testdata;
 
 import structureTree.structureNode.SFunctionNode;
 
-public class UnitUnderTestDataNode extends DataNode {
+public class SubProgramDataNode extends DataNode {
     private SFunctionNode functionNode;
 
     public SFunctionNode getFunctionNode() {
@@ -13,7 +13,7 @@ public class UnitUnderTestDataNode extends DataNode {
         this.functionNode = functionNode;
     }
 
-    public UnitUnderTestDataNode(SFunctionNode functionNode) {
+    public SubProgramDataNode(SFunctionNode functionNode) {
         this.functionNode = functionNode;
         setName(functionNode.getName());
         setType("Unit under test");
