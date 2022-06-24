@@ -3,27 +3,51 @@ package testexecution;
 import cfg.CFGNode;
 import parser.ProjectParser;
 import structureTree.structureNode.SFunctionNode;
+import testcases.TestCase;
+import testdata.DataNode;
+import testdata.SubProgramDataNode;
+import testdata.ValueDataNode;
+import testdata.normal_datanode.NormalDataNode;
+import utils.SearchInDataTree;
+import utils.SearchInSTree;
 import utils.Utils;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Instrument {
+    public static final String TAB = "    ";
     private String sourcePath;
     private CFGNode cfgNode;
     private String instrumentPath;
-    private SFunctionNode functionNode;
-
+    private String testPath;
     private File instrumentFolder;
+    private SFunctionNode functionNode;
+    private TestCase testCase;
 
-    public Instrument(String sourcePath, CFGNode cfgNode, SFunctionNode functionNode) {
+    public Instrument(String sourcePath, CFGNode cfgNode, SFunctionNode functionNode, TestCase testCase) {
         this.sourcePath = sourcePath;
         this.cfgNode = cfgNode;
         this.functionNode = functionNode;
+        this.testCase = testCase;
+    }
+
+    public String getTestPath() {
+        return testPath;
+    }
+
+    public void setTestPath(String testPath) {
+        this.testPath = testPath;
+    }
+
+    public TestCase getTestCase() {
+        return testCase;
+    }
+
+    public void setTestCase(TestCase testCase) {
+        this.testCase = testCase;
     }
 
     public SFunctionNode getFunctionNode() {
@@ -71,7 +95,7 @@ public class Instrument {
         createInstrumentPath();
         File clone = new File(instrumentPath);
         clone.setWritable(true);
-
+        mark();
     }
 
     private void createInstrumentPath() throws IOException {
@@ -88,28 +112,79 @@ public class Instrument {
             System.out.println("Create instrument folder successful");
         }
         else System.out.println("Instrument folder is existed");
-        setInstrumentFolder(instrumentFolder);
+        File instrumentFunctionFolder = new File(instrumentFolder.getAbsolutePath() + "/" + functionNode.getName());
+        if (instrumentFunctionFolder.mkdir()) {
+            System.out.println("Create instrument Function folder successful");
+        }
+        else System.out.println("Instrument folder is existed");
+        setInstrumentFolder(instrumentFunctionFolder);
 
-        File clone = new File(instrumentFolder.getAbsolutePath() + "/" + functionNode.getName() + "_clone.java");
+        File clone = new File(instrumentFunctionFolder.getAbsolutePath() + "/" + SearchInSTree.getJavaFileNode(functionNode).getName());
         if (clone.createNewFile()) {
             System.out.println("Create instrument function successful");
         }
         else System.out.println("Instrument function is existed");
         setInstrumentPath(clone.getAbsolutePath());
+
+        File testPath = new File(instrumentFunctionFolder.getAbsolutePath() + "/" + SearchInSTree.getJavaFileNode(functionNode).getName() + ".testpath");
+        if (testPath.createNewFile()) {
+            System.out.println("Create instrument function successful");
+        }
+        else System.out.println("Instrument function is existed");
+        setTestPath(testPath.getAbsolutePath());
+        Utils.writeToFile("", this.testPath);
     }
 
-    public void generateTestPath() {
+    public void mark() {
         StringBuilder content = new StringBuilder("");
         List<CFGNode> listCFG = transferCFGTreeToList(cfgNode);
 
         String sourceContent = Utils.readFileContent(sourcePath);
-        String cloneContent = "";
+        sourceContent = sourceContent.replaceAll("\n", "\n\r");
+        String cloneContent = sourceContent;
+        //todo: here mark into instrument
+        //todo: mark function under test
+        for (CFGNode cfg : listCFG) {
+            String mark = cfg.markContent(testPath) + "";
+            if (!mark.equals("")) {
+                int index = cfg.getStart();
+                String whitespace = Utils.getPreviousWhiteSpace(cloneContent, index - 1);
+                mark += "\n";
+                String s1 = cloneContent.substring(0, index);
+                String s2 = cloneContent.substring(index);
+                cloneContent = s1 + mark + whitespace + s2;
+            }
+        }
+        //todo: mark main function
+        String s1 = "public static void main(String[] args) {";
+        String body = createFunctionCall(testCase);
 
-
+        String s2 = "}";
+        String main = s1 + body + s2;
+        for (int i = cloneContent.length()-1; i >=0; i--) {
+            if (cloneContent.charAt(i) == '}') {
+                String tmp1 = cloneContent.substring(0, i);
+                String tmp2 = cloneContent.substring(i, cloneContent.length()-1);
+                cloneContent = tmp1 + TAB + main + "\n" + tmp2;
+                break;
+            }
+        }
+        int importindex = SearchInSTree.getJavaFileNode(functionNode).getCfg().getStart();
+        if (importindex == 0) {
+            cloneContent = Utils.importFileLibrary() + "\n" + cloneContent;
+        }else {
+            String tmp1 = cloneContent.substring(0, importindex);
+            String tmp2 = cloneContent.substring(importindex, cloneContent.length()-1);
+            cloneContent = tmp1 + Utils.importFileLibrary() + "\n" + s2;
+        }
+        //todo: finish mark instrument
+        cloneContent = cloneContent.replaceAll("\n\r", "\n");
+        Utils.writeToFile(cloneContent, instrumentPath);
         File source = new File(sourcePath);
         File clone = new File(instrumentPath);
         System.out.println();
     }
+
 
     public List<CFGNode> transferCFGTreeToList(CFGNode rootCFG) {
         List<CFGNode> list = new ArrayList<>();
@@ -121,4 +196,37 @@ public class Instrument {
         return list;
     }
 
+    public String createFunctionCall(TestCase testCase) {
+        StringBuffer str = new StringBuffer();
+        if (functionNode.getAst().isConstructor()) {
+            //example: new A(1, 2)
+            str.append("new ").append(functionNode.getName());
+        }
+        else if (functionNode.getAst().isStatic()) {
+            //example: A.func(1, 2)
+            String className = functionNode.getParent().getName();
+            str.append(className).append(".").append(functionNode.getName());
+        }
+        else if (!functionNode.getAst().isAbstract()) {
+            //example: new A().func(1, 2)
+            String className = functionNode.getParent().getName();
+            str.append("new ").append(className).append("().");
+            str.append(functionNode.getName());
+        }
+        str.append("(");
+        SubProgramDataNode subProgramDataNode = SearchInDataTree.searchSubprogramNode(testCase.getRootDataNode());
+        String tmp = "";
+        for (DataNode child : subProgramDataNode.getChildren()) {
+            if (child instanceof NormalDataNode) {
+                String value = ((NormalDataNode) child).getValue();
+                tmp += value + ",";
+            }
+        }
+        if (!tmp.equals("")) {
+            str.append(tmp.substring(0, tmp.length()-1));
+        }
+        str.append(");");
+        return String.valueOf(str);
+    }
 }
+

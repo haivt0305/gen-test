@@ -108,7 +108,19 @@ public class CFGNode {
         return cfg;
     }
 
-    public String markContent() {
+    public String markContent(String testPath) {
         return "";
+    }
+
+    @Override
+    public String toString() {
+        return "CFGNode{" +
+                "start=" + start +
+                ", end=" + end +
+                ", content='" + content + '\'' +
+                ", ast=" + ast +
+                ", children=" + children +
+                ", isVisited=" + isVisited +
+                '}';
     }
 }
