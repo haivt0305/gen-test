@@ -2,6 +2,7 @@ package parser;
 
 import cfg.CFGNode;
 import node.ClassAbstractableElementVisibleElementJavaNode;
+import node.FileNode;
 import node.Node;
 import node.FolderNode;
 import structureTree.SNode;
@@ -45,13 +46,13 @@ public class ProjectParser {
 
     public void doParsing(String path, int level, Node parent) throws IOException {
         FolderNode folderNode = new FolderNode();
-        folderNode.setAbsolutePath(path);
         folderNode.setName(new File(path).getName());
         if (parent != null) {
             parent.getChildren().add(folderNode);
             folderNode.setParent(parent);
         }
         File mainDir = new File(path);
+        folderNode.setAbsolutePath(mainDir.getAbsolutePath());
         if (mainDir.exists() && mainDir.isDirectory()) {
 
 //            for (File file : mainDir.listFiles()) {
@@ -67,10 +68,16 @@ public class ProjectParser {
             for (File f : arr) {
                 if (f.isFile() && f.getName().endsWith(".java")) {
                     String fileToString = FileService.readFileToString(f.getPath());
+                    FileNode fileNode = new FileNode();
+                    fileNode.setAbsolutePath(f.getAbsolutePath());
+                    fileNode.setName(f.getName());
+                    fileNode.setParent(folderNode);
+                    folderNode.getChildren().add(fileNode);
+
                     List<ClassAbstractableElementVisibleElementJavaNode> classes = JavaFileParser.parse(fileToString);
                     CFGNode cfgNode = CFGNode.parserToCFG(fileToString);
-                    folderNode.addChildrenFolder(classes);
-                    folderNode.setCfg(cfgNode);
+                    fileNode.addChildrenFolder(classes);
+                    fileNode.setCfg(cfgNode);
                 }
 
                 else if (f.isDirectory()) {
@@ -92,11 +99,13 @@ public class ProjectParser {
         try {
             parser.doParsing(projectPath, 0, null);
             folderNode = parser.getFolderNode();
+            folderNode.setChildrenAbsolutePath();
         } catch (IOException e) {
             e.printStackTrace();
         }
         SNode root = Utils.parseFolderNodeToSNode(folderNode);
-//        root.refreshParent();
+        root.setAbsolutePath(folderNode.getAbsolutePath());
+        root.setChildrenAbsolutePath();
         return root;
     }
 }

@@ -14,6 +14,15 @@ public abstract class SNode {
     private SNode parent = null;
     private String name;
     private String type;
+    private String absolutePath;
+
+    public String getAbsolutePath() {
+        return absolutePath;
+    }
+
+    public void setAbsolutePath(String absolutePath) {
+        this.absolutePath = absolutePath;
+    }
 
     public String getType() {
         return type;
@@ -66,5 +75,12 @@ public abstract class SNode {
             info += child.getInfo();
         }
         return info;
+    }
+
+    public void setChildrenAbsolutePath() {
+        for (SNode child : children) {
+            child.setAbsolutePath(absolutePath + "/" + child.getName());
+            child.setChildrenAbsolutePath();
+        }
     }
 }

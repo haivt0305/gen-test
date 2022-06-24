@@ -16,7 +16,9 @@ public class Utils {
         for (Node child : node.getChildren()) {
             System.out.println("parse " + child.getName());
             SNode sNodeChild = Utils.parseFolderNodeToSNode(child);
-            if (sNodeChild != null) root.getChildren().add(sNodeChild);
+            if (sNodeChild != null) {
+                root.getChildren().add(sNodeChild);
+            }
         }
         for (SNode child : root.getChildren()) {
             child.setParent(root);

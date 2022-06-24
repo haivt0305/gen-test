@@ -23,6 +23,7 @@ public class AppStart {
             CFGNode cfgNode = CFGNode.parseToCFG(functionNode);
 
             TestExecution tcExecution = new TestExecution(testCaseList, cfgNode);
+            tcExecution.setFunctionNode(functionNode);
             tcExecution.execute();
         }
     }
