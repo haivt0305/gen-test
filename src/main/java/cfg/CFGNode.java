@@ -14,6 +14,8 @@ public class CFGNode {
 
     public CFGNode(ASTNode ast) {
         this.ast = ast;
+        setStart(ast.getStartPosition());
+        setEnd(ast.getStartPosition() + ast.getLength());
     }
 
     public ASTNode getAst() {
@@ -106,4 +108,7 @@ public class CFGNode {
         return cfg;
     }
 
+    public String markContent() {
+        return "";
+    }
 }

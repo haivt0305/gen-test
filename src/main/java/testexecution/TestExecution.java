@@ -1,11 +1,14 @@
 package testexecution;
 
 import cfg.CFGNode;
+import node.FileNode;
 import structureTree.structureNode.SFunctionNode;
 import testcases.TestCase;
 import testdata.DataNode;
 import testdata.RootDataNode;
+import utils.SearchInSTree;
 
+import java.io.File;
 import java.util.List;
 
 public class TestExecution {
@@ -44,10 +47,20 @@ public class TestExecution {
 
     public void execute() {
         for (TestCase testCase : testCaseList) {
-            RootDataNode rootDataNode = testCase.getRootDataNode();
-            for (DataNode dataNode : rootDataNode.getChildren());
+            FileNode  fileNode = SearchInSTree.getJavaFileNode(functionNode);
+            String absolutePath = fileNode.getAbsolutePath();
+            Instrument instrument = new Instrument(absolutePath, rootCFG, functionNode);
+            try {
+                instrument.markInstrument();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            instrument.generateTestPath();
         }
     }
+
+
 
 
 }

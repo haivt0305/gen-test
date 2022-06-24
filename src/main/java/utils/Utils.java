@@ -1,9 +1,12 @@
 package utils;
 
+import node.FileNode;
 import node.Node;
 import org.eclipse.jdt.core.dom.*;
 import structureTree.SNode;
+import structureTree.structureNode.SFunctionNode;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -67,6 +70,27 @@ public class Utils {
         }
 
         return children;
+    }
+
+    public static String readFileContent(String path) {
+        String content = "";
+        File fileToRead = new File(path);
+
+        try(FileReader fileStream = new FileReader( fileToRead );
+            BufferedReader bufferedReader = new BufferedReader( fileStream ) ) {
+
+            String line = null;
+
+            while( (line = bufferedReader.readLine()) != null ) {
+                //do something with line
+                content += line + "\n";
+            }
+
+        } catch ( Exception ex ) {
+            ex.printStackTrace();
+        }
+
+        return content;
     }
 
 }

@@ -45,6 +45,8 @@ public class ProjectParser {
 
 
     public void doParsing(String path, int level, Node parent) throws IOException {
+
+        setProjectPath(new File(path).getAbsolutePath());
         FolderNode folderNode = new FolderNode();
         folderNode.setName(new File(path).getName());
         if (parent != null) {

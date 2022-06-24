@@ -1,5 +1,7 @@
 package utils;
 
+import node.FileNode;
+import node.Node;
 import structureTree.SNode;
 import structureTree.structureNode.SFunctionNode;
 
@@ -16,5 +18,13 @@ public class SearchInSTree {
             functionNodeList.addAll(searchSFunction(child));
         }
         return functionNodeList;
+    }
+
+    public static FileNode getJavaFileNode(SFunctionNode functionNode) {
+        Node node = functionNode.getAst();
+        while (!(node instanceof FileNode)) {
+            node = node.getParent();
+        }
+        return (FileNode) node;
     }
 }
