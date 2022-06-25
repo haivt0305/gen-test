@@ -171,9 +171,36 @@ public class Utils {
 //                "        }";
     }
 
-
     public static String importFileLibrary() {
         return "import java.io.*;";
     }
 
+    public static List<String> readFileByLines(String path) throws IOException {
+        List<String> lines = new ArrayList<>();
+        // Open the file
+        FileInputStream fstream = new FileInputStream(path);
+        BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
+
+        String strLine;
+
+        //Read File Line By Line
+        while ((strLine = br.readLine()) != null)   {
+            // Print the content on the console
+            lines.add(strLine);
+        }
+
+        //Close the input stream
+        fstream.close();
+        return lines;
+    }
+
+    public static int getStartValueOfLineInTestPath(String line) {
+        String val = "";
+        for (char c : line.toCharArray()) {
+            if ('0' <= c && c <= '9') {
+                val += c;
+            } else break;
+        }
+        return Integer.valueOf(val);
+    }
 }

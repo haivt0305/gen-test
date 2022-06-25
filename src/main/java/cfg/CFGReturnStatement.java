@@ -2,7 +2,17 @@ package cfg;
 
 import utils.Utils;
 
-public class CFGExpressionStatement extends CFGNode implements IEnableToEvaluateCoverage {
+public class CFGReturnStatement extends CFGNode implements IEnableToEvaluateCoverage{
+    String returnType = "";
+
+    public String getReturnType() {
+        return returnType;
+    }
+
+    public void setReturnType(String returnType) {
+        this.returnType = returnType;
+    }
+
     @Override
     public String markContent(String testPath) {
         StringBuilder content = new StringBuilder("");

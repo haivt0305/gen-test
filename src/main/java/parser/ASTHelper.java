@@ -111,6 +111,9 @@ public class ASTHelper {
             else if (node instanceof Expression) {
                 cfgChild = new CFGExpression();
             }
+            else if (node instanceof ReturnStatement) {
+                cfgChild = new CFGReturnStatement();
+            }
             if (cfgChild != null) {
                 cfgChild.setContent(node.toString());
                 cfgChild.setStart(node.getStartPosition());

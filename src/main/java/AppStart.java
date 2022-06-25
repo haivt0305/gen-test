@@ -25,6 +25,7 @@ public class AppStart {
             TestExecution tcExecution = new TestExecution(testCaseList, cfgNode);
             tcExecution.setFunctionNode(functionNode);
             tcExecution.execute();
+            tcExecution.showCoverage();
         }
     }
 }
