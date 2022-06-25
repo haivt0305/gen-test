@@ -19,7 +19,7 @@ public class Solution {
         FileWriter fw = new FileWriter(file,true);
         //BufferedWriter writer give better performance
         BufferedWriter bw = new BufferedWriter(fw);
-        bw.write("CFGIfStatementNode{StartAt:151,EndAt:268" + "\n");
+        bw.write("151CFGIfStatementNode{StartAt:151,EndAt:268" + "\n");
         //Closing BufferedWriter Stream
         bw.close();
  
@@ -45,7 +45,7 @@ public class Solution {
         FileWriter fw = new FileWriter(file,true);
         //BufferedWriter writer give better performance
         BufferedWriter bw = new BufferedWriter(fw);
-        bw.write("CFGExpressionStatement{StartAt:187,EndAt:214" + "\n");
+        bw.write("187CFGExpressionStatement{StartAt:187,EndAt:214" + "\n");
         //Closing BufferedWriter Stream
         bw.close();
  
@@ -71,7 +71,7 @@ public class Solution {
         FileWriter fw = new FileWriter(file,true);
         //BufferedWriter writer give better performance
         BufferedWriter bw = new BufferedWriter(fw);
-        bw.write("CFGExpressionStatement{StartAt:227,EndAt:258" + "\n");
+        bw.write("227CFGExpressionStatement{StartAt:227,EndAt:258" + "\n");
         //Closing BufferedWriter Stream
         bw.close();
  
@@ -92,5 +92,5 @@ public class Solution {
         }
         return findGCD(y, x%y);
     }
-    public static void main(String[] args) {new Solution(-1730400162,1401435860);}
+    public static void main(String[] args) {new Solution(1144523627,384886729);}
 }
