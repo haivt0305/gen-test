@@ -26,6 +26,7 @@ public class Convert {
         for (int i = 0; i < methods.length; i++) {
             MethodAbstractableElementVisibleElementJavaNode methodNode = new MethodAbstractableElementVisibleElementJavaNode();
             methodNode.setInforFromASTNode(methods[i], cu);
+            methodNode.setAstNode(methods[i]);
             result.add(methodNode);
         }
         return result;

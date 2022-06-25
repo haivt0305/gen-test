@@ -12,7 +12,6 @@ import testdata.*;
 import testdata.normal_datanode.*;
 import testdata.structure_datanode.ClassDataNode;
 import testdata.structure_datanode.StructDataNode;
-import utils.SearchInSTree;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,14 +27,17 @@ public class RandomGenerationStrategy extends GenerationStrategy {
         TestCase testCase = new TestCase(functionNode);
         RootDataNode rootDataNode = new RootDataNode();
         GlobalDataNode globalDataNode = new GlobalDataNode();
-        UnitUnderTestDataNode unitUnderTestDataNode = new UnitUnderTestDataNode(functionNode);
+        SubProgramDataNode subProgramDataNode = new SubProgramDataNode(functionNode);
 
         rootDataNode.getChildren().add(globalDataNode);
-        rootDataNode.getChildren().add(unitUnderTestDataNode);
+        rootDataNode.getChildren().add(subProgramDataNode);
         generateGlobalDataNode(functionNode, globalDataNode);
-        generateDataForDataNode(functionNode, unitUnderTestDataNode);
+        generateDataForDataNode(functionNode, subProgramDataNode);
 
-        testCase.setRootDataNode(new RootDataNode());
+        testCase.setRootDataNode(rootDataNode);
+        testCase.setNameOfTestcase(functionNode.getName());
+        testCaseList.add(testCase);
+        setListTestCaseGenerated(testCaseList);
         return testCaseList;
     }
 
@@ -48,9 +50,9 @@ public class RandomGenerationStrategy extends GenerationStrategy {
             dataNode.getChildren().add(child);
             generateDataForDataNode(sNode.getChildren().get(i), child);
         }
-        if (dataNode instanceof UnitUnderTestDataNode) {
+        if (dataNode instanceof SubProgramDataNode) {
             ReturnDataNode returnDataNode = new ReturnDataNode();
-            String type = ((UnitUnderTestDataNode)dataNode).getFunctionNode().getAst().getReturnType();
+            String type = ((SubProgramDataNode)dataNode).getFunctionNode().getAst().getReturnType();
             returnDataNode.setType(type);
             if (!type.equals("")) {
                 returnDataNode.setValue(generateRandomValue(returnDataNode));
@@ -87,7 +89,7 @@ public class RandomGenerationStrategy extends GenerationStrategy {
                 dataNode = new StructDataNode();
             }
             else if (sNode instanceof SFunctionNode) {
-                dataNode = new UnitUnderTestDataNode((SFunctionNode) sNode);
+                dataNode = new SubProgramDataNode((SFunctionNode) sNode);
             }
 
         }

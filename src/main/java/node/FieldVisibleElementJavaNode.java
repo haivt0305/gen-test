@@ -88,6 +88,7 @@ public class FieldVisibleElementJavaNode extends VisibleElementJavaNode {
                     }
                 }
             }
+            fieldNode.setAstNode(node);
             fieldNodes.add(fieldNode);
         }
         return fieldNodes;

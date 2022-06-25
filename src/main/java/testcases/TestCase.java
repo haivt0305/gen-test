@@ -8,6 +8,7 @@ public class TestCase {
     private SFunctionNode functionNode;
     private String nameOfTestcase;
     private int IDofTestcase;
+    private String status = "N_A";
 
     public int getIDofTestcase() {
         return IDofTestcase;

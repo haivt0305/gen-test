@@ -60,6 +60,7 @@ public class ParameterJavaNode extends JavaNode {
 
             }
         }
+        if (sNode == null) return null;
         sNode.setName(getName());
         sNode.setType(getType());
         return sNode;

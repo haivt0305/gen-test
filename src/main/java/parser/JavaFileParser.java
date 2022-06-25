@@ -21,8 +21,8 @@ public class JavaFileParser {
                 if (node != null) {
                     classNode.setInforFromASTNode(node, cu);
                     classes.add(classNode);
-                    CFGNode cfg = new CFGNode();
-                    ASTHelper.generateCFGTreeFromASTNode(node, cfg);
+//                    CFGNode cfg = new CFGNode();
+//                    ASTHelper.generateCFGTreeFromASTNode(node, cfg);
                     return false;
                 }
                 return true;
@@ -38,27 +38,5 @@ public class JavaFileParser {
         cu.accept(visitor);
         return classes;
     }
-
-    public static CFGNode parserToCFG(String sourceCode) {
-        CFGNode cfg = new CFGNode();
-
-        ASTParser parser = ASTParser.newParser(AST.JLS8);
-        parser.setSource(sourceCode.toCharArray());
-        parser.setKind(ASTParser.K_COMPILATION_UNIT);
-        CompilationUnit cu = (CompilationUnit) parser.createAST(null);
-        ASTVisitor visitor = new ASTVisitor() {
-            @Override
-            public boolean visit(TypeDeclaration node) {
-                ASTHelper.generateCFGTreeFromASTNode(node, cfg);
-                return true;
-            }
-        };
-
-        cu.accept(visitor);
-
-        return cfg;
-    }
-
-
 
 }
