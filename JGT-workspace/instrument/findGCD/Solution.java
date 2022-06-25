@@ -12,10 +12,9 @@ public class Solution {
 
 
     public static int findGCD(int x, int y) {
-        //base case
         try{
         //Specify the file name and path here
-        File file =new File("C:/Users/haivt/Desktop/gen-test-main/JGT-workspace/instrument/findGCD/Solution.java.testpath");
+        File file =new File("/home/tj/Giang/gen-test/JGT-workspace/instrument/findGCD/Solution.java.testpath");
  
         /* This logic is to create the file if the
          * file is not already present
@@ -28,7 +27,7 @@ public class Solution {
         FileWriter fw = new FileWriter(file,true);
         //BufferedWriter writer give better performance
         BufferedWriter bw = new BufferedWriter(fw);
-        bw.write("CFGIfStatementNode{StartAt:365,EndAt:409" + "\n");
+        bw.write("CFGIfStatementNode{StartAt:331,EndAt:373" + "\n");
         //Closing BufferedWriter Stream
         bw.close();
  
@@ -43,5 +42,5 @@ public class Solution {
         }
         return findGCD(y, x%y);
     }
-    public static void main(String[] args) {Solution.findGCD(700883824,2081312882);}
+    public static void main(String[] args) {Solution.findGCD(-1661452622,1024497486);}
 }

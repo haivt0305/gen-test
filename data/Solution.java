@@ -11,7 +11,6 @@ public class Solution {
 
 
     public static int findGCD(int x, int y) {
-        //base case
         if(y== 0){
             return x;
         }

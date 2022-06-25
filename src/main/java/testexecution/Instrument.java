@@ -140,7 +140,10 @@ public class Instrument {
         List<CFGNode> listCFG = transferCFGTreeToList(cfgNode);
 
         String sourceContent = Utils.readFileContent(sourcePath);
-        sourceContent = sourceContent.replaceAll("\n", "\n\r");
+        String osname = System.getProperty("os.name");
+        if (osname.startsWith("Windows")) {
+            sourceContent = sourceContent.replaceAll("\n", "\r\n");
+        }
         String cloneContent = sourceContent;
         //todo: here mark into instrument
         //todo: mark function under test
