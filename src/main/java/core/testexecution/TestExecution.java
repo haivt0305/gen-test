@@ -89,11 +89,12 @@ public class TestExecution {
             }
             if (instrument != null) {
                 try {
-                    CommandLine.executeCommand("javac " + instrument.getInstrumentPath());
-                    String folderPath = instrument.getInstrumentFolder().getAbsolutePath().replaceAll("\\\\", "/");
+                    String command = "javac " + instrument.getInstrumentPath();
+                    CommandLine.executeCommand(command);
+                    String folderPath = instrument.getInstrumentFolder().getAbsolutePath();//.replaceAll("\\\\", "/");
                     System.out.println(folderPath);
-//                    CommandLine.executeCommand("cd D:\\Haivt\\gen-test\\JGT-workspace\\instrument\\Solution");
-                    CommandLine.executeCommand("java " + instrument.getInstrumentPath());
+                    command = "java " + SearchInSTree.getJavaFileNode(functionNode).getName().replaceAll(".java", "");
+                    CommandLine.executeCommand(command, folderPath);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

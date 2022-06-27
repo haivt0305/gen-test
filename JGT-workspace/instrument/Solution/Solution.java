@@ -6,7 +6,7 @@ public class Solution {
     public Solution(int numerator, int denominator) {
         try{
         //Specify the file name and path here
-        File file =new File("D:/Haivt/gen-test/JGT-workspace/instrument/Solution/Solution.java.testpath");
+        File file =new File("/home/tj/Giang/gen-test/JGT-workspace/instrument/Solution/Solution.java.testpath");
  
         /* This logic is to create the file if the
          * file is not already present
@@ -19,7 +19,7 @@ public class Solution {
         FileWriter fw = new FileWriter(file,true);
         //BufferedWriter writer give better performance
         BufferedWriter bw = new BufferedWriter(fw);
-        bw.write("156CFGIfStatementNode{StartAt:156,EndAt:276" + "\n");
+        bw.write("151CFGIfStatementNode{StartAt:151,EndAt:268" + "\n");
         //Closing BufferedWriter Stream
         bw.close();
  
@@ -32,7 +32,7 @@ public class Solution {
         if (denominator != 0) {
             try{
         //Specify the file name and path here
-        File file =new File("D:/Haivt/gen-test/JGT-workspace/instrument/Solution/Solution.java.testpath");
+        File file =new File("/home/tj/Giang/gen-test/JGT-workspace/instrument/Solution/Solution.java.testpath");
  
         /* This logic is to create the file if the
          * file is not already present
@@ -45,7 +45,7 @@ public class Solution {
         FileWriter fw = new FileWriter(file,true);
         //BufferedWriter writer give better performance
         BufferedWriter bw = new BufferedWriter(fw);
-        bw.write("193CFGExpressionStatement{StartAt:193,EndAt:220" + "\n");
+        bw.write("187CFGExpressionStatement{StartAt:187,EndAt:214" + "\n");
         //Closing BufferedWriter Stream
         bw.close();
  
@@ -58,7 +58,7 @@ public class Solution {
             this.numerator = numerator;
             try{
         //Specify the file name and path here
-        File file =new File("D:/Haivt/gen-test/JGT-workspace/instrument/Solution/Solution.java.testpath");
+        File file =new File("/home/tj/Giang/gen-test/JGT-workspace/instrument/Solution/Solution.java.testpath");
  
         /* This logic is to create the file if the
          * file is not already present
@@ -71,7 +71,7 @@ public class Solution {
         FileWriter fw = new FileWriter(file,true);
         //BufferedWriter writer give better performance
         BufferedWriter bw = new BufferedWriter(fw);
-        bw.write("234CFGExpressionStatement{StartAt:234,EndAt:265" + "\n");
+        bw.write("227CFGExpressionStatement{StartAt:227,EndAt:258" + "\n");
         //Closing BufferedWriter Stream
         bw.close();
  
@@ -92,5 +92,5 @@ public class Solution {
         }
         return findGCD(y, x%y);
     }
-    public static void main(String[] args) {new Solution(-1202219604,1954336766);}
-}
+    public static void main(String[] args) {new Solution(1466526679,-1697583744);}
+}
