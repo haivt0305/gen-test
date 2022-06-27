@@ -1,12 +1,12 @@
-import cfg.CFGNode;
-import generationStrategy.RandomGenerationStrategy;
-import parser.ProjectParser;
-import structureTree.SNode;
-import structureTree.structureNode.SFunctionNode;
-import testcases.TestCase;
-import testcases.TestcaseManager;
-import testexecution.TestExecution;
-import utils.SearchInSTree;
+import core.cfg.CFGNode;
+import core.generationStrategy.RandomGenerationStrategy;
+import core.parser.ProjectParser;
+import core.structureTree.SNode;
+import core.structureTree.structureNode.SFunctionNode;
+import core.testcases.TestCase;
+import core.testcases.TestcaseManager;
+import core.testexecution.TestExecution;
+import core.utils.SearchInSTree;
 
 import java.io.IOException;
 import java.util.List;
