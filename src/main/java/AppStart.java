@@ -7,6 +7,7 @@ import core.testcases.TestCase;
 import core.testcases.TestcaseManager;
 import core.testexecution.TestExecution;
 import core.utils.SearchInSTree;
+import extent.Exporter;
 
 import java.io.IOException;
 import java.util.List;
@@ -26,6 +27,9 @@ public class AppStart {
             tcExecution.setFunctionNode(functionNode);
             tcExecution.execute();
             tcExecution.showCoverage();
+
+            Exporter exporter = new Exporter(testCaseList, tcExecution, functionNode);
+            exporter.export();
         }
     }
 }
