@@ -53,6 +53,10 @@ public class CFGNode {
         return content;
     }
 
+    public String getContentReport() {
+        return content;
+    }
+
     public void setContent(String content) {
         this.content = content;
     }

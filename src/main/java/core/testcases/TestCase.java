@@ -9,6 +9,23 @@ public class TestCase {
     private String nameOfTestcase;
     private int IDofTestcase;
     private String status = "N_A";
+    private String testPath;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getTestPath() {
+        return testPath;
+    }
+
+    public void setTestPath(String testPath) {
+        this.testPath = testPath;
+    }
 
     public int getIDofTestcase() {
         return IDofTestcase;
