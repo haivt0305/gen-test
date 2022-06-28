@@ -14,7 +14,7 @@ public class Solution {
     public static int findGCD(int x, int y) {
         try{
         //Specify the file name and path here
-        File file =new File("/home/tj/Giang/gen-test/JGT-workspace/instrument/findGCD/Solution.java.testpath");
+        File file =new File("D:/Haivt/gen-test/JGT-workspace/instrument/findGCD/Solution.java.testpath");
  
         /* This logic is to create the file if the
          * file is not already present
@@ -27,7 +27,7 @@ public class Solution {
         FileWriter fw = new FileWriter(file,true);
         //BufferedWriter writer give better performance
         BufferedWriter bw = new BufferedWriter(fw);
-        bw.write("331CFGIfStatementNode{StartAt:331,EndAt:373" + "\n");
+        bw.write("344CFGIfStatementNode{StartAt:344,EndAt:388" + "\n");
         //Closing BufferedWriter Stream
         bw.close();
  
@@ -40,7 +40,7 @@ public class Solution {
         if(y== 0){
             try{
         //Specify the file name and path here
-        File file =new File("/home/tj/Giang/gen-test/JGT-workspace/instrument/findGCD/Solution.java.testpath");
+        File file =new File("D:/Haivt/gen-test/JGT-workspace/instrument/findGCD/Solution.java.testpath");
  
         /* This logic is to create the file if the
          * file is not already present
@@ -53,7 +53,7 @@ public class Solution {
         FileWriter fw = new FileWriter(file,true);
         //BufferedWriter writer give better performance
         BufferedWriter bw = new BufferedWriter(fw);
-        bw.write("354CFGReturnStatement{StartAt:354,EndAt:363" + "\n");
+        bw.write("368CFGReturnStatement{StartAt:368,EndAt:377" + "\n");
         //Closing BufferedWriter Stream
         bw.close();
  
@@ -67,7 +67,7 @@ public class Solution {
         }
         try{
         //Specify the file name and path here
-        File file =new File("/home/tj/Giang/gen-test/JGT-workspace/instrument/findGCD/Solution.java.testpath");
+        File file =new File("D:/Haivt/gen-test/JGT-workspace/instrument/findGCD/Solution.java.testpath");
  
         /* This logic is to create the file if the
          * file is not already present
@@ -80,7 +80,7 @@ public class Solution {
         FileWriter fw = new FileWriter(file,true);
         //BufferedWriter writer give better performance
         BufferedWriter bw = new BufferedWriter(fw);
-        bw.write("382CFGReturnStatement{StartAt:382,EndAt:405" + "\n");
+        bw.write("398CFGReturnStatement{StartAt:398,EndAt:421" + "\n");
         //Closing BufferedWriter Stream
         bw.close();
  
@@ -92,5 +92,5 @@ public class Solution {
        }
         return findGCD(y, x%y);
     }
-    public static void main(String[] args) {Solution.findGCD(-446972664,1409603308);}
-}
+    public static void main(String[] args) {Solution.findGCD(1146583512,-651133743);}
+}
