@@ -4,18 +4,22 @@ import core.cfg.CFGNode;
 import core.parser.ProjectParser;
 import core.structureTree.structureNode.SFunctionNode;
 import core.testcases.TestCase;
+import core.testdata.DataNode;
+import core.testdata.SubProgramDataNode;
+import core.testdata.ValueDataNode;
+import core.testdata.normal_datanode.NormalDataNode;
 import core.testexecution.TestExecution;
 import core.utils.CFGUtils;
+import core.utils.SearchInDataTree;
 import core.utils.Utils;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import javax.xml.crypto.Data;
 import java.io.*;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class Exporter {
     private Workbook workbook = null;
@@ -28,9 +32,10 @@ public class Exporter {
 
     public static int IDCol = 0;
     public static int TESTPATHCol = 1;
-    public static int INPUTCol = 2;
-    public static int NAMECol = 3;
-    public static int INCol = 4;
+    public static String INPUTCol = "C";
+    public static String NAMECol = "D";
+    public static String INCol = "E";
+
 
     public static String _TEMPLATE_REPORT_PATH = "test_report_template.xlsx";
 
@@ -100,7 +105,7 @@ public class Exporter {
 
         getCell(sheet, "B1").setCellValue(functionNode.getName());
         getCell(sheet, "B2").setCellValue(testCases.size());
-        getCell(sheet, "B3").setCellValue(execution.getCoverage().getResult()*100 + "%");
+        getCell(sheet, "B3").setCellValue(execution.getCoverage().getResult()*100.0 + "%");
         getCell(sheet, "B4").setCellValue("STATEMENT");
         for (TestCase testCase : testCases) {
             export(testCase);
@@ -138,6 +143,7 @@ public class Exporter {
     public void export(TestCase testCase) {
         addID(runningRow);
         genTestPath(testCase, runningRow);
+        genArgument(testCase, runningRow);
     }
 
     public void addID(int rowNum) {
@@ -180,6 +186,36 @@ public class Exporter {
         style.setAlignment(CellStyle.ALIGN_LEFT);
         style.setVerticalAlignment(CellStyle.VERTICAL_TOP);
         tpCell.setCellStyle(style);
+    }
+
+    public void genArgument(TestCase testCase, int rowNum) {
+        SubProgramDataNode subProgramDataNode = SearchInDataTree.searchSubprogramNode(testCase.getRootDataNode());
+        for (DataNode dataNode : subProgramDataNode.getChildren()) {
+            if (dataNode instanceof ValueDataNode) {
+                rowNum = fillArgDataToCell(dataNode, rowNum);
+            }
+        }
+
+        runningRow = rowNum;
+    }
+
+    public int fillArgDataToCell(DataNode dataNode, int rowNum) {
+        Sheet sheet = workbook.getSheetAt(0);
+        String name = NAMECol + String.valueOf(rowNum + 1);
+        String in = INCol + String.valueOf(rowNum + 1);
+        Cell nameCell = getCell(sheet, name);
+        Cell inCell = getCell(sheet, in);
+        nameCell.setCellValue(dataNode.getName());
+        if (dataNode instanceof ValueDataNode) {
+            if (dataNode instanceof NormalDataNode) {
+                inCell.setCellValue(((NormalDataNode) dataNode).getValue());
+            }
+        }
+        rowNum = rowNum + 1;
+        for (DataNode child : dataNode.getChildren()) {
+            rowNum = fillArgDataToCell(child, rowNum);
+        }
+        return rowNum;
     }
 
     public static Cell getCell(Sheet sheet, String address) {
