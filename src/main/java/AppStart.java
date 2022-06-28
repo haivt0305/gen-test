@@ -7,9 +7,12 @@ import core.testcases.TestCase;
 import core.testcases.TestcaseManager;
 import core.testexecution.TestExecution;
 import core.utils.SearchInSTree;
+import core.utils.Utils;
 import extent.Exporter;
 
+import javax.rmi.CORBA.Util;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 
 public class AppStart {
@@ -30,6 +33,13 @@ public class AppStart {
 
             Exporter exporter = new Exporter(testCaseList, tcExecution, functionNode);
             exporter.export();
+        }
+
+        //print the template of test report
+        try {
+            Utils.printReport(AppStart.class.getResource(Exporter._TEMPLATE_REPORT_PATH).toURI().getPath());
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
         }
     }
 }
