@@ -1,5 +1,7 @@
 package core.testexecution;
 
+import core.testexecution.coverage.TestCoverage;
+
 public class TestExecutionManager {
 
     public static TestCoverage generateTestCoverage(TestExecution execution) {
