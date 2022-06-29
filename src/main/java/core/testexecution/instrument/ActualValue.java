@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import static core.testexecution.instrument.Instrument.TAB;
@@ -30,6 +31,7 @@ public class ActualValue {
     private File actualFolder;
     private String tracePath;
     private CFGNode cfgNode;
+    private Map<String,String> mapActualValue;
 
 
     private SFunctionNode functionNode;
@@ -40,6 +42,22 @@ public class ActualValue {
         this.cfgNode = cfgNode;
         this.functionNode = functionNode;
         this.testCase = testCase;
+    }
+
+    public CFGNode getCfgNode() {
+        return cfgNode;
+    }
+
+    public void setCfgNode(CFGNode cfgNode) {
+        this.cfgNode = cfgNode;
+    }
+
+    public Map<String, String> getMapActualValue() {
+        return mapActualValue;
+    }
+
+    public void setMapActualValue(Map<String, String> mapActualValue) {
+        this.mapActualValue = mapActualValue;
     }
 
     public String getTracePath() {
@@ -226,7 +244,7 @@ public class ActualValue {
                 String name = node.getName();
                 instrument.append("System.out.println(").append("\"").append(name).append("=\"").append(" + ").append(name);
                 instrument.append(");");
-                String content = Utils.getWriteToTestPathContent(name + "=", tracePath);
+                String content = Utils.getWriteToActualPathContent(name, tracePath);
                 instrument.append(content);
             }
         }

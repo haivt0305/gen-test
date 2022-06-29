@@ -20,6 +20,7 @@ import javax.xml.crypto.Data;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Exporter {
     private Workbook workbook = null;
@@ -35,6 +36,8 @@ public class Exporter {
     public static String INPUTCol = "C";
     public static String NAMECol = "D";
     public static String INCol = "E";
+    public static String ACTUALName = "I";
+    public static String ACTUALIn = "J";
 
 
     public static String _TEMPLATE_REPORT_PATH = "test_report_template.xlsx";
@@ -144,6 +147,8 @@ public class Exporter {
         addID(runningRow);
         genTestPath(testCase, runningRow);
         genArgument(testCase, runningRow);
+        genActualVal(testCase, runningRow);
+
     }
 
     public void addID(int rowNum) {
@@ -196,7 +201,25 @@ public class Exporter {
             }
         }
 
-        runningRow = rowNum;
+//        runningRow = rowNum;
+    }
+
+    private void genActualVal(TestCase testCase, int runningRow) {
+        Sheet sheet = workbook.getSheetAt(0);
+        Map<String, String> mapActualValue = testCase.getActualValue().getMapActualValue();
+        for (String name : mapActualValue.keySet()) {
+            String actualVal = mapActualValue.get(name);
+            System.out.println(name + "====" + actualVal);
+
+
+            String nameCol = ACTUALName + String.valueOf(runningRow + 1);
+            String inCol = ACTUALIn + String.valueOf(runningRow + 1);
+            Cell nameCell = getCell(sheet, nameCol);
+            Cell inCell = getCell(sheet, inCol);
+            nameCell.setCellValue(name);
+            inCell.setCellValue(actualVal);
+            runningRow++;
+        }
     }
 
     public int fillArgDataToCell(DataNode dataNode, int rowNum) {

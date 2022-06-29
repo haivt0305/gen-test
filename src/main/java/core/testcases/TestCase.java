@@ -2,6 +2,7 @@ package core.testcases;
 
 import core.structureTree.structureNode.SFunctionNode;
 import core.testdata.RootDataNode;
+import core.testexecution.instrument.ActualValue;
 
 public class TestCase {
     private RootDataNode rootDataNode;
@@ -10,6 +11,15 @@ public class TestCase {
     private int IDofTestcase;
     private String status = "N_A";
     private String testPath;
+    private ActualValue actualValue;
+
+    public ActualValue getActualValue() {
+        return actualValue;
+    }
+
+    public void setActualValue(ActualValue actualValue) {
+        this.actualValue = actualValue;
+    }
 
     public String getStatus() {
         return status;

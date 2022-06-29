@@ -13,7 +13,9 @@ import core.utils.SearchInSTree;
 import core.utils.Utils;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TestExecution {
     public static final String SUCCESS = "success";
@@ -27,6 +29,8 @@ public class TestExecution {
     private ActualValue actualValue;
     private String status = "N_A";
     private TestCoverage coverage;
+
+
 
     public TestExecution(List<TestCase> testCaseList, CFGNode rootCFG) {
         this.testCaseList = testCaseList;
@@ -135,7 +139,24 @@ public class TestExecution {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                String tracePath = actualValue.getTracePath();
+                List<String> linesTestPath = null;
+                try {
+                    linesTestPath = Utils.readFileByLines(tracePath);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Map<String, String> mapActualValue= new HashMap<>();
+                for (String line : linesTestPath) {
+                    int i = line.indexOf("=");
+                    String name = line.substring(0, i);
+                    String actualValue = line.substring(i+1);
+                    mapActualValue.put(name, actualValue);
+                }
+                actualValue.setMapActualValue(mapActualValue);
+                System.out.println();
             }
+            testCase.setActualValue(actualValue);
 
         }
         TestCoverage cov = TestExecutionManager.generateTestCoverage(this);

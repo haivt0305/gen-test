@@ -161,18 +161,34 @@ public class Utils {
                 "         System.out.println(\"Exception occurred:\");\n" +
                 "         ioe.printStackTrace();\n" +
                 "       }";
-//        return "try {\n" +
-//                "            //Whatever the file path is.\n" +
-//                "            File statText = new File(\"" + absolutePath.replaceAll("\\\\", "/") + "\");\n" +
-//                "            FileOutputStream is = new FileOutputStream(statText);\n" +
-//                "            OutputStreamWriter osw = new OutputStreamWriter(is);\n" +
-//                "            Writer w = new BufferedWriter(osw);\n" +
-//                "            w.write(\""+ content + "\");\n" +
-//                "            w.close();\n" +
-//                "        } catch (IOException e) {\n" +
-//                "            System.err.println(\"Problem writing to the file \" + \"" + absolutePath.replaceAll("\\\\", "/")
-//                + "\");\n" +
-//                "        }";
+    }
+
+    public static String getWriteToActualPathContent(String arg, String absolutePath) {
+        return "try{\n" +
+                "        //Specify the file name and path here\n" +
+                "        File file =new File(\"" + absolutePath.replaceAll("\\\\", "/")+ "\");\n" +
+                " \n" +
+                "        /* This logic is to create the file if the\n" +
+                "         * file is not already present\n" +
+                "         */\n" +
+                "        if(!file.exists()){\n" +
+                "           file.createNewFile();\n" +
+                "        }\n" +
+                " \n" +
+                "        //Here true is to append the content to file\n" +
+                "        FileWriter fw = new FileWriter(file,true);\n" +
+                "        //BufferedWriter writer give better performance\n" +
+                "        BufferedWriter bw = new BufferedWriter(fw);\n" +
+                "        bw.write(\"" + arg + "=\" + " + arg + " + \"\\n\");\n" +
+                "        //Closing BufferedWriter Stream\n" +
+                "        bw.close();\n" +
+                " \n" +
+                "    System.out.println(\"Data successfully appended at the end of file\");\n" +
+                " \n" +
+                "      }catch(IOException ioe){\n" +
+                "         System.out.println(\"Exception occurred:\");\n" +
+                "         ioe.printStackTrace();\n" +
+                "       }";
     }
 
     public static String importFileLibrary() {
