@@ -99,7 +99,6 @@ public class Instrument {
     }
 
     private void createInstrumentPath() throws IOException {
-        File folder = new File(sourcePath).getParentFile();
         String projectPath = ProjectParser.getParser().getProjectPath();
 
         File workspace = new File(new File(projectPath).getParentFile().getAbsolutePath() + "/JGT-workspace");
@@ -127,7 +126,7 @@ public class Instrument {
         setInstrumentPath(clone.getAbsolutePath());
 
         File testPath = new File(instrumentFunctionFolder.getAbsolutePath() + "/" + SearchInSTree.getJavaFileNode(functionNode).getName()
-                + new Random().nextInt() + ".testpath");
+                /*+ new Random().nextInt()*/ + ".testpath");
         if (testPath.createNewFile()) {
             System.out.println("Create instrument function successful");
         }
@@ -137,7 +136,6 @@ public class Instrument {
     }
 
     public void mark() {
-        StringBuilder content = new StringBuilder("");
         List<CFGNode> listCFG = transferCFGTreeToList(cfgNode);
 
         String sourceContent = Utils.readFileContent(sourcePath);
@@ -161,7 +159,7 @@ public class Instrument {
         }
         //todo: mark main function
         String s1 = "public static void main(String[] args) {";
-        String body = createFunctionCall(testCase);
+        String body = createFunctionCall(testCase, functionNode);
 
         String s2 = "}";
         String main = s1 + body + s2;
@@ -200,7 +198,7 @@ public class Instrument {
         return list;
     }
 
-    public String createFunctionCall(TestCase testCase) {
+    public static String createFunctionCall(TestCase testCase, SFunctionNode functionNode) {
         StringBuffer str = new StringBuffer();
         if (functionNode.getAst().isConstructor()) {
             //example: new A(1, 2)

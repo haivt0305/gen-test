@@ -6,6 +6,7 @@ import core.node.FileNode;
 import core.structureTree.structureNode.SFunctionNode;
 import core.testcases.TestCase;
 import core.testexecution.coverage.TestCoverage;
+import core.testexecution.instrument.ActualValue;
 import core.testexecution.instrument.Instrument;
 import core.utils.CFGUtils;
 import core.utils.SearchInSTree;
@@ -23,6 +24,7 @@ public class TestExecution {
     private SFunctionNode functionNode;
 
     private Instrument instrument;
+    private ActualValue actualValue;
     private String status = "N_A";
     private TestCoverage coverage;
 
@@ -114,8 +116,27 @@ public class TestExecution {
                     System.out.println("Fail to read test path content.");
                     e.printStackTrace();
                 }
+                setStatus(SUCCESS);
             }
-            setStatus(SUCCESS);
+            actualValue = new ActualValue(absolutePath, rootCFG, functionNode, testCase);
+            try {
+                actualValue.markInstrument();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if (actualValue != null) {
+                try {
+                    String command = "javac " + actualValue.getActualPath();
+                    CommandLine.executeCommand(command);
+                    String folderPath = actualValue.getActualFolder().getAbsolutePath();//.replaceAll("\\\\", "/");
+                    System.out.println(folderPath);
+                    command = "java " + SearchInSTree.getJavaFileNode(functionNode).getName().replaceAll(".java", "");
+                    CommandLine.executeCommand(command, folderPath);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
         }
         TestCoverage cov = TestExecutionManager.generateTestCoverage(this);
         setCoverage(cov);
