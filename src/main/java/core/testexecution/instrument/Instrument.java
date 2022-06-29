@@ -1,4 +1,4 @@
-package core.testexecution;
+package core.testexecution.instrument;
 
 import core.cfg.CFGNode;
 import core.parser.ProjectParser;
@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Instrument {
     public static final String TAB = "    ";
@@ -125,7 +126,8 @@ public class Instrument {
         else System.out.println("Instrument function is existed");
         setInstrumentPath(clone.getAbsolutePath());
 
-        File testPath = new File(instrumentFunctionFolder.getAbsolutePath() + "/" + SearchInSTree.getJavaFileNode(functionNode).getName() + ".testpath");
+        File testPath = new File(instrumentFunctionFolder.getAbsolutePath() + "/" + SearchInSTree.getJavaFileNode(functionNode).getName()
+                + new Random().nextInt() + ".testpath");
         if (testPath.createNewFile()) {
             System.out.println("Create instrument function successful");
         }

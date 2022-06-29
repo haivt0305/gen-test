@@ -5,6 +5,8 @@ import core.cmd.CommandLine;
 import core.node.FileNode;
 import core.structureTree.structureNode.SFunctionNode;
 import core.testcases.TestCase;
+import core.testexecution.coverage.TestCoverage;
+import core.testexecution.instrument.Instrument;
 import core.utils.CFGUtils;
 import core.utils.SearchInSTree;
 import core.utils.Utils;
@@ -75,6 +77,7 @@ public class TestExecution {
 
     public void setFunctionNode(SFunctionNode functionNode) {
         this.functionNode = functionNode;
+        functionNode.getAst().setCfg(rootCFG);
     }
 
     public void execute() {
@@ -84,6 +87,7 @@ public class TestExecution {
             instrument = new Instrument(absolutePath, rootCFG, functionNode, testCase);
             try {
                 instrument.markInstrument();
+                testCase.setTestPath(instrument.getTestPath());
             } catch (Exception e) {
                 e.printStackTrace();
             }

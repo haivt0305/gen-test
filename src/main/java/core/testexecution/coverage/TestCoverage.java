@@ -1,7 +1,8 @@
-package core.testexecution;
+package core.testexecution.coverage;
 
 import core.cfg.CFGNode;
 import core.cfg.IEnableToEvaluateCoverage;
+import core.testexecution.TestExecution;
 import core.utils.CFGUtils;
 
 import java.util.List;
@@ -10,6 +11,7 @@ public class TestCoverage {
     private TestExecution execution;
     private double totalNode;
     private double passNode;
+    private double result;
 
     public TestCoverage(TestExecution execution) {
         this.execution = execution;
@@ -40,6 +42,14 @@ public class TestCoverage {
         this.passNode = passNode;
     }
 
+    public double getResult() {
+        return result;
+    }
+
+    public void setResult(double result) {
+        this.result = result;
+    }
+
     public void evaluate() {
         if (execution == null) return;
         CFGNode cfg = execution.getRootCFG();
@@ -52,5 +62,6 @@ public class TestCoverage {
         }
         setTotalNode(totalList.size());
         setPassNode(countPass);
+        setResult(passNode/totalNode);
     }
 }
