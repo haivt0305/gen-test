@@ -237,9 +237,13 @@ public class Exporter {
         nameCell.setCellValue(dataNode.getName());
         nameActualCell.setCellValue(dataNode.getName());
         if (dataNode instanceof ValueDataNode) {
-            if (dataNode instanceof NormalDataNode || dataNode instanceof ReturnDataNode) {
+            if (dataNode instanceof NormalDataNode) {
                 inCell.setCellValue(((NormalDataNode) dataNode).getValue());
                 inActualCell.setCellValue(((NormalDataNode) dataNode).getValue());
+            }
+            else if (dataNode instanceof ReturnDataNode) {
+                inCell.setCellValue(((ReturnDataNode) dataNode).getValue());
+                inActualCell.setCellValue(((ReturnDataNode) dataNode).getValue());
             }
         }
         rowNum = rowNum + 1;
