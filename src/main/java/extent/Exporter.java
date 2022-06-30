@@ -5,6 +5,7 @@ import core.parser.ProjectParser;
 import core.structureTree.structureNode.SFunctionNode;
 import core.testcases.TestCase;
 import core.testdata.DataNode;
+import core.testdata.ReturnDataNode;
 import core.testdata.SubProgramDataNode;
 import core.testdata.ValueDataNode;
 import core.testdata.normal_datanode.NormalDataNode;
@@ -16,7 +17,6 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import javax.xml.crypto.Data;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +37,8 @@ public class Exporter {
     public static String NAMECol = "D";
     public static String INCol = "E";
     public static String ACTUALName = "I";
-    public static String ACTUALIn = "J";
+    public static String ActualIn = "J";
+    public static String ACTUALOut = "K";
 
 
     public static String _TEMPLATE_REPORT_PATH = "test_report_template.xlsx";
@@ -213,7 +214,7 @@ public class Exporter {
 
 
             String nameCol = ACTUALName + String.valueOf(runningRow + 1);
-            String inCol = ACTUALIn + String.valueOf(runningRow + 1);
+            String inCol = ACTUALOut + String.valueOf(runningRow + 1);
             Cell nameCell = getCell(sheet, nameCol);
             Cell inCell = getCell(sheet, inCol);
             nameCell.setCellValue(name);
@@ -226,12 +227,19 @@ public class Exporter {
         Sheet sheet = workbook.getSheetAt(0);
         String name = NAMECol + String.valueOf(rowNum + 1);
         String in = INCol + String.valueOf(rowNum + 1);
+        String nameActual = ACTUALName + String.valueOf(rowNum + 1);
+        String inActual = ActualIn + String.valueOf(rowNum + 1);
+
         Cell nameCell = getCell(sheet, name);
         Cell inCell = getCell(sheet, in);
+        Cell nameActualCell = getCell(sheet, nameActual);
+        Cell inActualCell = getCell(sheet, inActual);
         nameCell.setCellValue(dataNode.getName());
+        nameActualCell.setCellValue(dataNode.getName());
         if (dataNode instanceof ValueDataNode) {
-            if (dataNode instanceof NormalDataNode) {
+            if (dataNode instanceof NormalDataNode || dataNode instanceof ReturnDataNode) {
                 inCell.setCellValue(((NormalDataNode) dataNode).getValue());
+                inActualCell.setCellValue(((NormalDataNode) dataNode).getValue());
             }
         }
         rowNum = rowNum + 1;

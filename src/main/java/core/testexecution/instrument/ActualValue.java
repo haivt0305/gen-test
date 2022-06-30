@@ -228,7 +228,7 @@ public class ActualValue {
         }else {
             String tmp1 = cloneContent.substring(0, importindex);
             String tmp2 = cloneContent.substring(importindex, cloneContent.length()-1);
-            cloneContent = tmp1 + Utils.importFileLibrary() + "\n" + s2;
+            cloneContent = tmp1 + Utils.importFileLibrary() + "\n" + tmp2;
         }
         //todo: finish intrument actual value for test case
 
